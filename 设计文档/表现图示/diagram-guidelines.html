@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>7. 图示规范入口</title>
+  <style>
+    :root {
+      --bg: #0b1118;
+      --panel: #172331;
+      --line: #2e4559;
+      --text: #edf4fa;
+      --muted: #9fb2c3;
+      --accent: #66d4ff;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: "Microsoft YaHei", Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      padding: 32px;
+    }
+
+    main {
+      max-width: 1120px;
+      margin: 0 auto;
+    }
+
+    h1 {
+      margin: 0 0 10px;
+      font-size: 28px;
+      letter-spacing: 0;
+    }
+
+    .note {
+      margin: 0 0 22px;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .card {
+      display: grid;
+      gap: 12px;
+      min-height: 180px;
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: var(--panel);
+      color: inherit;
+      text-decoration: none;
+      align-content: start;
+    }
+
+    .card.active {
+      border-color: #5e86a8;
+    }
+
+    .card h2 {
+      margin: 0;
+      font-size: 20px;
+    }
+
+    .card p {
+      margin: 0;
+      color: #cfe0ec;
+      line-height: 1.65;
+    }
+
+    .state {
+      width: fit-content;
+      border: 1px solid #36536a;
+      border-radius: 999px;
+      padding: 5px 10px;
+      color: var(--accent);
+      background: #101d28;
+      font-size: 13px;
+    }
+
+    @media (max-width: 780px) {
+      body { padding: 18px; }
+      .grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>7. 图示规范入口</h1>
+    <p class="note">本入口按《自动战斗表现框架 v0.3》的 7.1-7.5 管理示意图。每个编号只服务一个表现主题，不把敌方、己方、UI、受击绑定点混在同一张图里。</p>
+
+    <section class="grid" aria-label="图示规范目录">
+      <a class="card active" href="./floating-text-priority.html">
+        <span class="state">已开始</span>
+        <h2>7.1 飘字位置 / 颜色 / 优先级图</h2>
+        <p>拆成敌方结果与己方结果两套示意图，用来约束飘字分区、颜色方向、优先级和动效强度。</p>
+      </a>
+
+      <a class="card active" href="./ally-skill-cast-flow.html">
+        <span class="state">已开始</span>
+        <h2>7.2 己方技能释放链路图</h2>
+        <p>用于表现技能从 CD 完成、起手、施法、生效、命中反馈到收束的链路。</p>
+      </a>
+
+      <a class="card active" href="./enemy-attack-warning-3step.html">
+        <span class="state">已开始</span>
+        <h2>7.3 敌方攻击表现三段式图</h2>
+        <p>用于表现敌方攻击的预备提示、攻击生效、己方受击确认三段，让自动战斗里的掉血来源更可读。</p>
+      </a>
+
+      <a class="card active" href="./hit-bind-point.html">
+        <span class="state">已开始</span>
+        <h2>7.4 受击绑定点示意图</h2>
+        <p>用于表现受击特效、飘字、命中反馈的默认中心点规则，以及中大型怪轴偏移和 Boss 特殊点概念。</p>
+      </a>
+
+      <section class="card">
+        <span class="state">暂缓</span>
+        <h2>7.5 后续待补图示</h2>
+        <p>收纳技能 CD/吟唱 UI、状态进入/持续/结束、战场信息分区、特效遮挡与画面预算等后续图。</p>
+      </section>
+    </section>
+  </main>
+</body>
+</html>

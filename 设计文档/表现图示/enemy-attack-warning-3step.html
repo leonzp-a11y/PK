@@ -1,0 +1,251 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>7.3 敌方攻击表现三段式图</title>
+  <style>
+    :root {
+      --bg: #0b1118;
+      --panel: #172331;
+      --line: #2f4558;
+      --text: #edf4fa;
+      --muted: #9fb2c3;
+      --warn: #ffbd38;
+      --danger: #ff5b4a;
+      --hit: #ff2f2f;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: "Microsoft YaHei", Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      padding: 28px;
+    }
+
+    main {
+      max-width: 1180px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 430px 1fr;
+      gap: 24px;
+      align-items: start;
+    }
+
+    h1 {
+      grid-column: 1 / -1;
+      margin: 0 0 8px;
+      font-size: 28px;
+      letter-spacing: 0;
+    }
+
+    .note {
+      grid-column: 1 / -1;
+      margin: 0 0 12px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .phone {
+      width: 430px;
+      aspect-ratio: 500 / 1078;
+      position: relative;
+      overflow: hidden;
+      border: 2px solid #33475a;
+      border-radius: 18px;
+      background:
+        radial-gradient(circle at 50% 16%, rgba(255,255,255,.88) 0 12%, transparent 32%),
+        linear-gradient(#68c7f1 0%, #b7edf5 36%, #8bd18b 62%, #557b4d 100%);
+      box-shadow: 0 20px 60px rgba(0,0,0,.45);
+    }
+
+    .path {
+      position: absolute;
+      left: 112px;
+      top: 480px;
+      width: 226px;
+      height: 520px;
+      background: linear-gradient(#e8d898, #f5e9bb);
+      clip-path: polygon(42% 0, 60% 0, 100% 100%, 0 100%);
+      opacity: .86;
+    }
+
+    .enemy {
+      position: absolute;
+      left: 50%;
+      top: 280px;
+      width: 164px;
+      height: 236px;
+      transform: translateX(-50%);
+    }
+
+    .enemy div { position: absolute; background: linear-gradient(#4f6881, #2d4055); }
+    .head { left: 52px; top: 12px; width: 62px; height: 58px; border-radius: 18px; }
+    .torso { left: 38px; top: 66px; width: 92px; height: 106px; border-radius: 26px 26px 34px 34px; }
+    .arm-l { left: -6px; top: 72px; width: 44px; height: 104px; border-radius: 24px; transform: rotate(-38deg); }
+    .arm-r { right: -6px; top: 72px; width: 44px; height: 104px; border-radius: 24px; transform: rotate(38deg); }
+    .leg-l { left: 48px; top: 168px; width: 38px; height: 68px; border-radius: 20px; }
+    .leg-r { right: 48px; top: 168px; width: 38px; height: 68px; border-radius: 20px; }
+
+    .halo {
+      position: absolute;
+      left: 160px;
+      top: 248px;
+      width: 110px;
+      height: 110px;
+      border: 4px solid var(--warn);
+      border-radius: 50%;
+      opacity: .8;
+      box-shadow: 0 0 24px rgba(255,189,56,.65);
+    }
+
+    .hit-line {
+      position: absolute;
+      left: 198px;
+      top: 490px;
+      width: 36px;
+      height: 226px;
+      border-radius: 18px;
+      background: linear-gradient(rgba(255,47,47,.08), rgba(255,47,47,.82));
+      box-shadow: 0 0 24px rgba(255,47,47,.85);
+    }
+
+    .hand {
+      position: absolute;
+      left: 34px;
+      bottom: 74px;
+      width: 96px;
+      height: 64px;
+      border-radius: 48px 48px 22px 22px;
+      background: #efb18c;
+      transform: rotate(12deg);
+    }
+
+    .weapon {
+      position: absolute;
+      right: 62px;
+      bottom: 96px;
+      width: 32px;
+      height: 308px;
+      border-radius: 16px;
+      background: linear-gradient(90deg, #2d355d, #73def3, #143b70);
+      transform: rotate(12deg);
+    }
+
+    .player-hit {
+      position: absolute;
+      left: 176px;
+      top: 706px;
+      color: var(--hit);
+      font-size: 34px;
+      font-weight: 900;
+      text-shadow: 0 2px 3px rgba(0,0,0,.75);
+    }
+
+    .step {
+      position: absolute;
+      left: 22px;
+      width: 150px;
+      padding: 8px 10px;
+      border: 1px solid rgba(255,255,255,.34);
+      border-radius: 10px;
+      background: rgba(14,26,35,.75);
+      color: #f5fbff;
+      font-size: 13px;
+      line-height: 1.35;
+    }
+
+    .s1 { top: 244px; }
+    .s2 { top: 542px; }
+    .s3 { top: 728px; }
+
+    .skillbar {
+      position: absolute;
+      left: 136px;
+      right: 136px;
+      bottom: 28px;
+      height: 50px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+    }
+
+    .skill {
+      display: grid;
+      place-items: center;
+      border-radius: 10px;
+      border: 2px solid rgba(255,255,255,.75);
+      background: rgba(18,32,43,.86);
+      color: white;
+      font-weight: 800;
+      font-size: 13px;
+    }
+
+    .rules { display: grid; gap: 16px; }
+    .card { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 16px; }
+    .card h2 { margin: 0 0 12px; font-size: 18px; }
+    table { width: 100%; border-collapse: collapse; font-size: 13px; line-height: 1.45; }
+    th, td { border: 1px solid var(--line); padding: 8px 10px; vertical-align: top; }
+    th { background: #203246; color: #fff; text-align: left; }
+    td { color: #d9e6ef; }
+    .back { color: #91dfff; text-decoration: none; font-size: 14px; }
+
+    @media (max-width: 940px) {
+      body { padding: 16px; }
+      main { grid-template-columns: 1fr; }
+      .phone { width: min(430px, 100%); margin: 0 auto; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>7.3 敌方攻击表现三段式图</h1>
+    <p class="note">用于约束敌人自动攻击时的可读性：玩家要先看见敌人正在攻击，再看见攻击何时生效，最后通过己方受击反馈理解掉血来源。</p>
+
+    <section class="phone" aria-label="敌方攻击表现三段式示意">
+      <div class="path"></div>
+      <div class="halo"></div>
+      <div class="enemy">
+        <div class="head"></div><div class="torso"></div><div class="arm-l"></div><div class="arm-r"></div><div class="leg-l"></div><div class="leg-r"></div>
+      </div>
+      <div class="hit-line"></div>
+      <div class="player-hit">-76</div>
+      <div class="hand"></div>
+      <div class="weapon"></div>
+      <div class="skillbar"><div class="skill">火</div><div class="skill">6s</div><div class="skill">10s</div></div>
+      <div class="step s1">1. 预备提示<br>抬手/蓄力/发光</div>
+      <div class="step s2">2. 攻击生效<br>命中帧/攻击特效</div>
+      <div class="step s3">3. 受击确认<br>己方飘字/状态反馈</div>
+    </section>
+
+    <section class="rules">
+      <a class="back" href="./diagram-guidelines.html">返回 7. 图示规范入口</a>
+      <div class="card">
+        <h2>三段式规则</h2>
+        <table>
+          <thead><tr><th>阶段</th><th>表现重点</th><th>可读性目标</th></tr></thead>
+          <tbody>
+            <tr><td>预备提示</td><td>敌人抬手、蓄力、发光、音效预热</td><td>玩家知道“敌人正在攻击”</td></tr>
+            <tr><td>攻击生效</td><td>命中帧、攻击特效、命中音效</td><td>玩家知道“这一击已经生效”</td></tr>
+            <tr><td>己方受击确认</td><td>己方掉血飘字、受击抖动、状态变化</td><td>玩家知道“我为什么掉血/被控”</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="card">
+        <h2>自动战斗注意点</h2>
+        <table>
+          <tbody>
+            <tr><td>预兆不能太弱</td><td>因为玩家不主动闪避时，也需要理解掉血来源。</td></tr>
+            <tr><td>全自动语境</td><td>当前不使用需要玩家即时观察和操作的提示，重点放在攻击来源、命中时机和受击确认。</td></tr>
+            <tr><td>命中帧要明确</td><td>受击动作、红色掉血飘字、音效/震动必须对齐。</td></tr>
+            <tr><td>强弱分级</td><td>普通攻击可轻提示，强攻击/Boss 技能需要更长预兆和更强危险色。</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

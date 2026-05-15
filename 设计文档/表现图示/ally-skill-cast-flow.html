@@ -1,0 +1,278 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>7.2 己方技能释放链路图</title>
+  <style>
+    :root {
+      --bg: #0b1118;
+      --panel: #172331;
+      --line: #2f4558;
+      --text: #edf4fa;
+      --muted: #9fb2c3;
+      --blue: #66d4ff;
+      --gold: #ffbd38;
+      --green: #50d879;
+      --red: #ff6b5c;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: "Microsoft YaHei", Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      padding: 28px;
+    }
+
+    main {
+      max-width: 1180px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 430px 1fr;
+      gap: 24px;
+      align-items: start;
+    }
+
+    h1 {
+      grid-column: 1 / -1;
+      margin: 0 0 8px;
+      font-size: 28px;
+      letter-spacing: 0;
+    }
+
+    .note {
+      grid-column: 1 / -1;
+      margin: 0 0 12px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .phone {
+      width: 430px;
+      aspect-ratio: 500 / 1078;
+      position: relative;
+      overflow: hidden;
+      border: 2px solid #33475a;
+      border-radius: 18px;
+      background:
+        radial-gradient(circle at 50% 16%, rgba(255,255,255,.88) 0 12%, transparent 32%),
+        linear-gradient(#68c7f1 0%, #b7edf5 36%, #8bd18b 62%, #557b4d 100%);
+      box-shadow: 0 20px 60px rgba(0,0,0,.45);
+    }
+
+    .path {
+      position: absolute;
+      left: 112px;
+      top: 480px;
+      width: 226px;
+      height: 520px;
+      background: linear-gradient(#e8d898, #f5e9bb);
+      clip-path: polygon(42% 0, 60% 0, 100% 100%, 0 100%);
+      opacity: .86;
+    }
+
+    .enemy {
+      position: absolute;
+      left: 50%;
+      top: 286px;
+      width: 148px;
+      height: 224px;
+      transform: translateX(-50%);
+      opacity: .72;
+    }
+
+    .enemy div { position: absolute; background: linear-gradient(#4f6881, #2d4055); }
+    .head { left: 47px; top: 12px; width: 58px; height: 54px; border-radius: 18px; }
+    .torso { left: 34px; top: 62px; width: 84px; height: 102px; border-radius: 26px 26px 34px 34px; }
+    .arm-l { left: 0; top: 92px; width: 42px; height: 82px; border-radius: 24px; transform: rotate(16deg); }
+    .arm-r { right: 0; top: 92px; width: 42px; height: 82px; border-radius: 24px; transform: rotate(-16deg); }
+    .leg-l { left: 42px; top: 158px; width: 36px; height: 66px; border-radius: 20px; }
+    .leg-r { right: 42px; top: 158px; width: 36px; height: 66px; border-radius: 20px; }
+
+    .weapon {
+      position: absolute;
+      right: 62px;
+      bottom: 96px;
+      width: 32px;
+      height: 308px;
+      border-radius: 16px;
+      background: linear-gradient(90deg, #2d355d, #73def3, #143b70);
+      transform: rotate(12deg);
+      box-shadow: 0 0 16px rgba(84,218,255,.8);
+    }
+
+    .hand {
+      position: absolute;
+      left: 34px;
+      bottom: 74px;
+      width: 96px;
+      height: 64px;
+      border-radius: 48px 48px 22px 22px;
+      background: #efb18c;
+      transform: rotate(12deg);
+    }
+
+    .cast-line {
+      position: absolute;
+      left: 244px;
+      top: 486px;
+      width: 124px;
+      height: 4px;
+      border-radius: 4px;
+      background: var(--blue);
+      box-shadow: 0 0 16px rgba(102,212,255,.9);
+      transform: rotate(-22deg);
+    }
+
+    .hit-flash {
+      position: absolute;
+      left: 194px;
+      top: 410px;
+      width: 54px;
+      height: 54px;
+      border: 3px solid rgba(255,189,56,.95);
+      border-radius: 50%;
+      box-shadow: 0 0 22px rgba(255,189,56,.75);
+    }
+
+    .float {
+      position: absolute;
+      left: 186px;
+      top: 354px;
+      color: #fff0a6;
+      font-size: 28px;
+      font-weight: 900;
+      text-shadow: 0 2px 3px rgba(0,0,0,.72);
+    }
+
+    .skillbar {
+      position: absolute;
+      left: 82px;
+      right: 82px;
+      bottom: 26px;
+      height: 58px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 9px;
+    }
+
+    .skill {
+      position: relative;
+      display: grid;
+      place-items: center;
+      border: 2px solid rgba(255,255,255,.78);
+      border-radius: 10px;
+      background: rgba(18,32,43,.86);
+      color: white;
+      font-weight: 800;
+      font-size: 13px;
+    }
+
+    .skill.ready { border-color: var(--gold); box-shadow: 0 0 12px rgba(255,189,56,.7); }
+    .skill.casting::after {
+      content: "";
+      position: absolute;
+      left: 5px;
+      right: 5px;
+      bottom: 5px;
+      height: 5px;
+      border-radius: 5px;
+      background: linear-gradient(90deg, var(--blue) 68%, rgba(255,255,255,.2) 68%);
+    }
+
+    .step {
+      position: absolute;
+      left: 24px;
+      width: 142px;
+      padding: 8px 10px;
+      border: 1px solid rgba(255,255,255,.34);
+      border-radius: 10px;
+      background: rgba(14,26,35,.72);
+      color: #f5fbff;
+      font-size: 13px;
+      line-height: 1.35;
+    }
+
+    .s1 { top: 708px; }
+    .s2 { top: 608px; }
+    .s3 { top: 508px; }
+    .s4 { top: 386px; }
+    .s5 { top: 292px; }
+
+    .rules { display: grid; gap: 16px; }
+    .card { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 16px; }
+    .card h2 { margin: 0 0 12px; font-size: 18px; }
+    table { width: 100%; border-collapse: collapse; font-size: 13px; line-height: 1.45; }
+    th, td { border: 1px solid var(--line); padding: 8px 10px; vertical-align: top; }
+    th { background: #203246; color: #fff; text-align: left; }
+    td { color: #d9e6ef; }
+    .back { color: #91dfff; text-decoration: none; font-size: 14px; }
+
+    @media (max-width: 940px) {
+      body { padding: 16px; }
+      main { grid-template-columns: 1fr; }
+      .phone { width: min(430px, 100%); margin: 0 auto; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>7.2 己方技能释放链路图</h1>
+    <p class="note">用于约束自动战斗中玩家技能从 CD 完成到命中反馈的表现链路。这里不讨论技能表和数值，只看表现层阶段。</p>
+
+    <section class="phone" aria-label="己方技能释放链路示意">
+      <div class="path"></div>
+      <div class="enemy">
+        <div class="head"></div><div class="torso"></div><div class="arm-l"></div><div class="arm-r"></div><div class="leg-l"></div><div class="leg-r"></div>
+      </div>
+      <div class="hit-flash"></div>
+      <div class="float">151</div>
+      <div class="cast-line"></div>
+      <div class="hand"></div>
+      <div class="weapon"></div>
+      <div class="skillbar">
+        <div class="skill ready">火</div>
+        <div class="skill casting">冰</div>
+        <div class="skill">6s</div>
+        <div class="skill">10s</div>
+      </div>
+      <div class="step s1">1. CD 完成<br>技能可释放提示</div>
+      <div class="step s2">2. 起手<br>动作/音效预热</div>
+      <div class="step s3">3. 施法<br>弹道或范围出现</div>
+      <div class="step s4">4. 生效<br>命中点确认</div>
+      <div class="step s5">5. 反馈<br>受击/飘字/收束</div>
+    </section>
+
+    <section class="rules">
+      <a class="back" href="./diagram-guidelines.html">返回 7. 图示规范入口</a>
+      <div class="card">
+        <h2>链路阶段</h2>
+        <table>
+          <thead><tr><th>阶段</th><th>表现重点</th><th>前端/美术要对齐的点</th></tr></thead>
+          <tbody>
+            <tr><td>CD 完成</td><td>技能图标可用，弱提示即可</td><td>不要把“可用提示”做成真正释放特效</td></tr>
+            <tr><td>起手</td><td>己方动作、武器/手部准备、音效预热</td><td>瞬发可以短，吟唱/持续施法必须可读</td></tr>
+            <tr><td>施法</td><td>弹道、范围、持续光效或施法环</td><td>特效方向必须指向目标或作用区域</td></tr>
+            <tr><td>生效</td><td>命中点、范围爆点、持续 tick 点</td><td>生效帧要和伤害飘字/受击反馈对齐</td></tr>
+            <tr><td>收束</td><td>特效结束、技能进入 CD、下一技能排队</td><td>自动战斗里收束不要拖慢技能节奏</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="card">
+        <h2>技能类型差异</h2>
+        <table>
+          <tbody>
+            <tr><td>瞬发</td><td>强调“生效点”和“命中反馈”，起手可以很短。</td></tr>
+            <tr><td>吟唱</td><td>需要读条/蓄力态，释放前要让玩家知道技能正在准备。</td></tr>
+            <tr><td>持续施法</td><td>需要持续态、tick 节奏、打断/结束反馈。</td></tr>
+            <tr><td>BUFF/DEBUFF</td><td>命中点不一定强，但状态进入必须有图标或短文字确认。</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

@@ -1,0 +1,450 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>敌方结果飘字示意图</title>
+  <style>
+    :root {
+      --panel: #172331;
+      --line: #2f4558;
+      --text: #edf4fa;
+      --muted: #9fb2c3;
+      --damage: #fff0a6;
+      --crit: #ffbd38;
+      --fail: #cfd9e5;
+      --resist: #b9a4ff;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: "Microsoft YaHei", Arial, sans-serif;
+      background: #0b1118;
+      color: var(--text);
+      padding: 28px;
+    }
+
+    .page {
+      max-width: 1180px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 430px 1fr;
+      gap: 24px;
+      align-items: start;
+    }
+
+    h1 {
+      grid-column: 1 / -1;
+      margin: 0 0 8px;
+      font-size: 28px;
+      letter-spacing: 0;
+    }
+
+    .note {
+      grid-column: 1 / -1;
+      margin: 0 0 12px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .phone {
+      width: 430px;
+      aspect-ratio: 500 / 1078;
+      border: 2px solid #33475a;
+      border-radius: 18px;
+      overflow: hidden;
+      position: relative;
+      background:
+        radial-gradient(circle at 48% 15%, rgba(255,255,255,.88) 0 12%, transparent 32%),
+        linear-gradient(#68c7f1 0%, #b7edf5 36%, #8bd18b 62%, #557b4d 100%);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.45);
+    }
+
+    .mountain {
+      position: absolute;
+      left: -40px;
+      right: -40px;
+      top: 160px;
+      height: 220px;
+      background:
+        linear-gradient(135deg, transparent 0 22%, rgba(71,124,153,.42) 22% 44%, transparent 44%),
+        linear-gradient(45deg, transparent 0 32%, rgba(77,145,151,.36) 32% 58%, transparent 58%);
+    }
+
+    .path {
+      position: absolute;
+      left: 110px;
+      top: 470px;
+      width: 230px;
+      height: 520px;
+      background: linear-gradient(#e8d898, #f5e9bb);
+      clip-path: polygon(42% 0, 60% 0, 100% 100%, 0 100%);
+      opacity: .88;
+    }
+
+    .left-rock,
+    .right-rock {
+      position: absolute;
+      top: 0;
+      width: 94px;
+      height: 100%;
+      background: linear-gradient(#546a7d, #334659);
+      opacity: .82;
+    }
+
+    .left-rock {
+      left: -18px;
+      clip-path: polygon(0 0, 84% 0, 62% 22%, 90% 40%, 58% 60%, 74% 100%, 0 100%);
+    }
+
+    .right-rock {
+      right: -54px;
+      clip-path: polygon(40% 0, 100% 0, 100% 100%, 18% 100%, 44% 68%, 20% 44%, 52% 18%);
+    }
+
+    .top-ui {
+      position: absolute;
+      left: 18px;
+      right: 18px;
+      top: 18px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: #f9fbff;
+      text-shadow: 0 2px 3px rgba(0,0,0,.35);
+      font-weight: 700;
+      font-size: 14px;
+    }
+
+    .enemy-name {
+      position: absolute;
+      left: 112px;
+      right: 112px;
+      top: 212px;
+      height: 28px;
+      border-radius: 999px;
+      background: rgba(24, 35, 43, .7);
+      border: 1px solid rgba(255,255,255,.35);
+      text-align: center;
+      line-height: 26px;
+      font-size: 13px;
+    }
+
+    .hp {
+      position: absolute;
+      left: 118px;
+      right: 118px;
+      top: 246px;
+      height: 12px;
+      border-radius: 7px;
+      background: #32161b;
+      border: 1px solid rgba(255,255,255,.32);
+    }
+
+    .hp span {
+      display: block;
+      width: 62%;
+      height: 100%;
+      border-radius: 7px;
+      background: #f05d63;
+    }
+
+    .enemy {
+      position: absolute;
+      left: 50%;
+      top: 288px;
+      width: 170px;
+      height: 250px;
+      transform: translateX(-50%);
+    }
+
+    .torso {
+      position: absolute;
+      left: 38px;
+      top: 70px;
+      width: 96px;
+      height: 112px;
+      border-radius: 28px 28px 36px 36px;
+      background: linear-gradient(#475e78, #2e4054);
+      border: 3px solid rgba(255,255,255,.13);
+    }
+
+    .head {
+      position: absolute;
+      left: 52px;
+      top: 18px;
+      width: 68px;
+      height: 62px;
+      border-radius: 22px;
+      background: linear-gradient(#394d65, #243447);
+    }
+
+    .eye {
+      position: absolute;
+      top: 42px;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: #8bff27;
+      box-shadow: 0 0 10px #8bff27;
+    }
+
+    .eye.left { left: 72px; }
+    .eye.right { right: 72px; }
+
+    .arm,
+    .leg {
+      position: absolute;
+      border-radius: 28px;
+      background: linear-gradient(#4f6881, #2d4055);
+      border: 2px solid rgba(255,255,255,.1);
+    }
+
+    .arm.left { left: 0; top: 100px; width: 48px; height: 96px; transform: rotate(16deg); }
+    .arm.right { right: 0; top: 100px; width: 48px; height: 96px; transform: rotate(-16deg); }
+    .leg.left { left: 48px; top: 176px; width: 42px; height: 74px; }
+    .leg.right { right: 48px; top: 176px; width: 42px; height: 74px; }
+
+    .core {
+      position: absolute;
+      left: 75px;
+      top: 128px;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: #99ff2f;
+      box-shadow: 0 0 18px #99ff2f;
+    }
+
+    .hand {
+      position: absolute;
+      left: 32px;
+      bottom: 72px;
+      width: 96px;
+      height: 64px;
+      border-radius: 48px 48px 22px 22px;
+      background: #efb18c;
+      transform: rotate(12deg);
+      border: 2px solid rgba(105,48,39,.25);
+    }
+
+    .weapon {
+      position: absolute;
+      right: 58px;
+      bottom: 96px;
+      width: 32px;
+      height: 308px;
+      border-radius: 16px;
+      background: linear-gradient(90deg, #2d355d, #73def3, #143b70);
+      transform: rotate(12deg);
+      box-shadow: 0 0 16px rgba(84, 218, 255, .8);
+    }
+
+    .weapon::before {
+      content: "";
+      position: absolute;
+      left: -23px;
+      top: -72px;
+      width: 78px;
+      height: 94px;
+      border-radius: 50% 50% 30% 30%;
+      background: linear-gradient(#cfffff, #36b9f6);
+      clip-path: polygon(50% 0, 86% 72%, 54% 100%, 16% 72%);
+    }
+
+    .skillbar {
+      position: absolute;
+      left: 136px;
+      right: 136px;
+      bottom: 28px;
+      height: 50px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+    }
+
+    .skill {
+      border-radius: 10px;
+      border: 2px solid rgba(255,255,255,.8);
+      background: rgba(20, 35, 45, .82);
+      display: grid;
+      place-items: center;
+      color: #fff;
+      font-weight: 800;
+      font-size: 13px;
+    }
+
+    .anchor {
+      position: absolute;
+      left: 50%;
+      top: 410px;
+      width: 16px;
+      height: 16px;
+      margin: -8px 0 0 -8px;
+      border: 2px solid rgba(255,255,255,.9);
+      border-radius: 50%;
+      background: rgba(255,255,255,.18);
+      box-shadow: 0 0 0 8px rgba(255,255,255,.08);
+    }
+
+    .zone {
+      position: absolute;
+      left: 52px;
+      right: 52px;
+      top: 146px;
+      height: 170px;
+      border: 1px dashed rgba(255, 240, 166, .68);
+      border-radius: 12px;
+      color: rgba(25, 36, 44, .8);
+      background: rgba(255,255,255,.12);
+      padding: 8px 10px;
+      font-size: 13px;
+      pointer-events: none;
+    }
+
+    .float {
+      position: absolute;
+      z-index: 10;
+      font-weight: 900;
+      white-space: nowrap;
+      line-height: 1;
+      text-shadow: 0 2px 3px rgba(0,0,0,.7);
+    }
+
+    .crit { left: 100px; top: 142px; color: var(--crit); font-size: 34px; transform: rotate(-4deg); }
+    .kill { right: 116px; top: 174px; color: #fff6d8; font-size: 23px; }
+    .dmg { left: 198px; top: 214px; color: var(--damage); font-size: 28px; }
+    .small { left: 256px; top: 250px; color: #fff5cf; font-size: 19px; opacity: .82; }
+    .guard { left: 124px; top: 292px; color: var(--fail); font-size: 23px; }
+    .resist { right: 104px; top: 304px; color: var(--resist); font-size: 22px; }
+
+    .rules {
+      display: grid;
+      gap: 16px;
+    }
+
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 16px;
+    }
+
+    .card h2 {
+      margin: 0 0 12px;
+      font-size: 18px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    th, td {
+      border: 1px solid var(--line);
+      padding: 8px 10px;
+      vertical-align: top;
+    }
+
+    th {
+      background: #203246;
+      color: #fff;
+      text-align: left;
+    }
+
+    td { color: #d9e6ef; }
+
+    .back {
+      color: #91dfff;
+      text-decoration: none;
+      font-size: 14px;
+    }
+
+    @media (max-width: 940px) {
+      body { padding: 16px; }
+      .page { grid-template-columns: 1fr; }
+      .phone { width: min(430px, 100%); margin: 0 auto; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <h1>敌方结果飘字示意图</h1>
+    <p class="note">只展示敌人被打后的结果飘字。己方受伤、治疗、状态变化不进入这张图，避免战斗信息混在一条视觉轨道里。</p>
+
+    <section class="phone" aria-label="敌方结果飘字示意">
+      <div class="mountain"></div>
+      <div class="path"></div>
+      <div class="left-rock"></div>
+      <div class="right-rock"></div>
+      <div class="top-ui"><span>Lv.28</span><span>菜单</span></div>
+      <div class="enemy-name">石像守卫</div>
+      <div class="hp"><span></span></div>
+      <div class="zone">敌方结果飘字区：围绕目标默认中心点向上分层</div>
+
+      <div class="enemy">
+        <div class="head"></div>
+        <div class="eye left"></div>
+        <div class="eye right"></div>
+        <div class="torso"></div>
+        <div class="arm left"></div>
+        <div class="arm right"></div>
+        <div class="leg left"></div>
+        <div class="leg right"></div>
+        <div class="core"></div>
+      </div>
+
+      <div class="anchor" title="默认中心点"></div>
+      <div class="float crit">暴击 302</div>
+      <div class="float kill">击杀</div>
+      <div class="float dmg">151</div>
+      <div class="float small">38</div>
+      <div class="float guard">格挡</div>
+      <div class="float resist">抵抗</div>
+
+      <div class="hand"></div>
+      <div class="weapon"></div>
+      <div class="skillbar">
+        <div class="skill">火</div>
+        <div class="skill">6s</div>
+        <div class="skill">10s</div>
+      </div>
+    </section>
+
+    <section class="rules">
+      <a class="back" href="./floating-text-priority.html">返回示意图入口</a>
+
+      <div class="card">
+        <h2>敌方飘字分层</h2>
+        <table>
+          <thead>
+            <tr><th>层级</th><th>内容</th><th>位置规则</th><th>处理规则</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>P1</td><td>击杀 / 暴击 / 破防</td><td>目标中心点上方高层</td><td>放大、短促强化，不能长时间遮挡敌人动作</td></tr>
+            <tr><td>P4</td><td>格挡 / 免疫 / 抵抗 / 未命中</td><td>目标中心点左右低层</td><td>不走完整伤害路径，用文字和轻反馈说明结果</td></tr>
+            <tr><td>P5</td><td>普通伤害</td><td>目标中心点正上方</td><td>正常显示，自动战斗高频时允许节流</td></tr>
+            <tr><td>P6</td><td>多段小伤害 / 持续伤害</td><td>普通伤害下层或侧向小轨道</td><td>缩小、合并或按节奏抽样显示</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="card">
+        <h2>绑定点规则</h2>
+        <table>
+          <tbody>
+            <tr><td>普通小怪 / 中型怪 / 精英怪</td><td>默认使用目标中心点播放受击飘字与基础受击反馈。</td></tr>
+            <tr><td>中大型怪</td><td>中心点不合适时，优先用 X / Y / Z 轴偏移修正，不额外拆复杂绑点。</td></tr>
+            <tr><td>单体 / 群体 / 物理 / 法术 / 持续</td><td>当前阶段都落到各自目标默认中心点；群体技能可以有范围主特效，但每个受击目标仍按自身中心点出结果。</td></tr>
+            <tr><td>Boss / 特殊怪</td><td>只预留特殊受击位概念，后续按 Boss 机制单独设计。</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

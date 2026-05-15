@@ -1,0 +1,4 @@
+interface:
+  display_name: "世界观设计师"
+  short_description: "为 PK 项目设计世界观、剧情、逸闻与触发式文本。"
+  default_prompt: "使用世界观设计师 Skill，为 PK 项目产出世界观、剧情、逸闻或触发式文本设计。"

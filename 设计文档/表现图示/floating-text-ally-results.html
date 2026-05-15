@@ -1,0 +1,382 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>己方结果飘字示意图</title>
+  <style>
+    :root {
+      --panel: #172331;
+      --line: #2f4558;
+      --text: #edf4fa;
+      --muted: #9fb2c3;
+      --playerDamage: #ff5b4a;
+      --heal: #50d879;
+      --shield: #79c8ff;
+      --status: #66d4ff;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: "Microsoft YaHei", Arial, sans-serif;
+      background: #0b1118;
+      color: var(--text);
+      padding: 28px;
+    }
+
+    .page {
+      max-width: 1180px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 430px 1fr;
+      gap: 24px;
+      align-items: start;
+    }
+
+    h1 {
+      grid-column: 1 / -1;
+      margin: 0 0 8px;
+      font-size: 28px;
+      letter-spacing: 0;
+    }
+
+    .note {
+      grid-column: 1 / -1;
+      margin: 0 0 12px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .phone {
+      width: 430px;
+      aspect-ratio: 500 / 1078;
+      border: 2px solid #33475a;
+      border-radius: 18px;
+      overflow: hidden;
+      position: relative;
+      background:
+        radial-gradient(circle at 48% 15%, rgba(255,255,255,.88) 0 12%, transparent 32%),
+        linear-gradient(#68c7f1 0%, #b7edf5 36%, #8bd18b 62%, #557b4d 100%);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.45);
+    }
+
+    .mountain {
+      position: absolute;
+      left: -40px;
+      right: -40px;
+      top: 160px;
+      height: 220px;
+      background:
+        linear-gradient(135deg, transparent 0 22%, rgba(71,124,153,.42) 22% 44%, transparent 44%),
+        linear-gradient(45deg, transparent 0 32%, rgba(77,145,151,.36) 32% 58%, transparent 58%);
+    }
+
+    .path {
+      position: absolute;
+      left: 110px;
+      top: 470px;
+      width: 230px;
+      height: 520px;
+      background: linear-gradient(#e8d898, #f5e9bb);
+      clip-path: polygon(42% 0, 60% 0, 100% 100%, 0 100%);
+      opacity: .88;
+    }
+
+    .left-rock,
+    .right-rock {
+      position: absolute;
+      top: 0;
+      width: 94px;
+      height: 100%;
+      background: linear-gradient(#546a7d, #334659);
+      opacity: .82;
+    }
+
+    .left-rock {
+      left: -18px;
+      clip-path: polygon(0 0, 84% 0, 62% 22%, 90% 40%, 58% 60%, 74% 100%, 0 100%);
+    }
+
+    .right-rock {
+      right: -54px;
+      clip-path: polygon(40% 0, 100% 0, 100% 100%, 18% 100%, 44% 68%, 20% 44%, 52% 18%);
+    }
+
+    .top-ui {
+      position: absolute;
+      left: 18px;
+      right: 18px;
+      top: 18px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: #f9fbff;
+      text-shadow: 0 2px 3px rgba(0,0,0,.35);
+      font-weight: 700;
+      font-size: 14px;
+    }
+
+    .enemy {
+      position: absolute;
+      left: 50%;
+      top: 298px;
+      width: 136px;
+      height: 206px;
+      transform: translateX(-50%);
+      opacity: .52;
+      filter: saturate(.85);
+    }
+
+    .torso {
+      position: absolute;
+      left: 31px;
+      top: 60px;
+      width: 78px;
+      height: 92px;
+      border-radius: 24px 24px 32px 32px;
+      background: linear-gradient(#475e78, #2e4054);
+    }
+
+    .head {
+      position: absolute;
+      left: 42px;
+      top: 18px;
+      width: 54px;
+      height: 50px;
+      border-radius: 18px;
+      background: linear-gradient(#394d65, #243447);
+    }
+
+    .arm,
+    .leg {
+      position: absolute;
+      border-radius: 24px;
+      background: linear-gradient(#4f6881, #2d4055);
+    }
+
+    .arm.left { left: 0; top: 88px; width: 40px; height: 76px; transform: rotate(16deg); }
+    .arm.right { right: 0; top: 88px; width: 40px; height: 76px; transform: rotate(-16deg); }
+    .leg.left { left: 38px; top: 146px; width: 36px; height: 60px; }
+    .leg.right { right: 38px; top: 146px; width: 36px; height: 60px; }
+
+    .ally-zone {
+      position: absolute;
+      left: 42px;
+      right: 42px;
+      top: 598px;
+      height: 190px;
+      border: 1px dashed rgba(255,91,74,.68);
+      border-radius: 12px;
+      color: rgba(25,36,44,.8);
+      background: rgba(255,255,255,.12);
+      padding: 8px 10px;
+      font-size: 13px;
+      pointer-events: none;
+    }
+
+    .hand {
+      position: absolute;
+      left: 32px;
+      bottom: 72px;
+      width: 96px;
+      height: 64px;
+      border-radius: 48px 48px 22px 22px;
+      background: #efb18c;
+      transform: rotate(12deg);
+      border: 2px solid rgba(105,48,39,.25);
+    }
+
+    .weapon {
+      position: absolute;
+      right: 58px;
+      bottom: 96px;
+      width: 32px;
+      height: 308px;
+      border-radius: 16px;
+      background: linear-gradient(90deg, #2d355d, #73def3, #143b70);
+      transform: rotate(12deg);
+      box-shadow: 0 0 16px rgba(84, 218, 255, .8);
+    }
+
+    .weapon::before {
+      content: "";
+      position: absolute;
+      left: -23px;
+      top: -72px;
+      width: 78px;
+      height: 94px;
+      border-radius: 50% 50% 30% 30%;
+      background: linear-gradient(#cfffff, #36b9f6);
+      clip-path: polygon(50% 0, 86% 72%, 54% 100%, 16% 72%);
+    }
+
+    .player-panel {
+      position: absolute;
+      left: 22px;
+      right: 22px;
+      bottom: 18px;
+      height: 86px;
+      border-radius: 14px;
+      background: rgba(14, 26, 35, .72);
+      border: 1px solid rgba(255,255,255,.18);
+    }
+
+    .skillbar {
+      position: absolute;
+      left: 136px;
+      right: 136px;
+      bottom: 30px;
+      height: 50px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+    }
+
+    .skill {
+      border-radius: 10px;
+      border: 2px solid rgba(255,255,255,.8);
+      background: rgba(20, 35, 45, .82);
+      display: grid;
+      place-items: center;
+      color: #fff;
+      font-weight: 800;
+      font-size: 13px;
+    }
+
+    .float {
+      position: absolute;
+      z-index: 10;
+      font-weight: 900;
+      white-space: nowrap;
+      line-height: 1;
+      text-shadow: 0 2px 3px rgba(0,0,0,.75);
+    }
+
+    .hit { left: 146px; top: 628px; color: var(--playerDamage); font-size: 34px; }
+    .control { left: 116px; top: 674px; color: var(--status); font-size: 24px; }
+    .heal { right: 126px; top: 710px; color: var(--heal); font-size: 28px; }
+    .shield { left: 190px; top: 754px; color: var(--shield); font-size: 23px; }
+
+    .rules {
+      display: grid;
+      gap: 16px;
+    }
+
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 16px;
+    }
+
+    .card h2 {
+      margin: 0 0 12px;
+      font-size: 18px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    th, td {
+      border: 1px solid var(--line);
+      padding: 8px 10px;
+      vertical-align: top;
+    }
+
+    th {
+      background: #203246;
+      color: #fff;
+      text-align: left;
+    }
+
+    td { color: #d9e6ef; }
+
+    .back {
+      color: #91dfff;
+      text-decoration: none;
+      font-size: 14px;
+    }
+
+    @media (max-width: 940px) {
+      body { padding: 16px; }
+      .page { grid-template-columns: 1fr; }
+      .phone { width: min(430px, 100%); margin: 0 auto; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <h1>己方结果飘字示意图</h1>
+    <p class="note">只展示玩家侧结果：受伤、治疗、护盾、控制和状态变化。敌方受击伤害不进入这张图。</p>
+
+    <section class="phone" aria-label="己方结果飘字示意">
+      <div class="mountain"></div>
+      <div class="path"></div>
+      <div class="left-rock"></div>
+      <div class="right-rock"></div>
+      <div class="top-ui"><span>Lv.28</span><span>菜单</span></div>
+
+      <div class="enemy">
+        <div class="head"></div>
+        <div class="torso"></div>
+        <div class="arm left"></div>
+        <div class="arm right"></div>
+        <div class="leg left"></div>
+        <div class="leg right"></div>
+      </div>
+
+      <div class="ally-zone">己方结果飘字区：靠近己方视角，不和敌方伤害轨道混排</div>
+      <div class="float hit">-76</div>
+      <div class="float control">眩晕</div>
+      <div class="float heal">+30</div>
+      <div class="float shield">护盾</div>
+
+      <div class="hand"></div>
+      <div class="weapon"></div>
+      <div class="player-panel"></div>
+      <div class="skillbar">
+        <div class="skill">火</div>
+        <div class="skill">6s</div>
+        <div class="skill">10s</div>
+      </div>
+    </section>
+
+    <section class="rules">
+      <a class="back" href="./floating-text-priority.html">返回示意图入口</a>
+
+      <div class="card">
+        <h2>己方飘字分层</h2>
+        <table>
+          <thead>
+            <tr><th>层级</th><th>内容</th><th>位置规则</th><th>处理规则</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>P0</td><td>玩家受伤 / 被控</td><td>己方视角下半区，靠近角色状态感知区</td><td>完整保留，避免被敌方伤害、技能特效和底部技能栏吞掉</td></tr>
+            <tr><td>P2</td><td>控制状态变化</td><td>己方结果区 + 状态 UI 双确认</td><td>短文字，必要时配合 UI 状态图标</td></tr>
+            <tr><td>P3</td><td>治疗 / 护盾 / 恢复</td><td>己方结果区偏右或状态条附近</td><td>可合并，但颜色必须与受伤明确区分</td></tr>
+            <tr><td>P6</td><td>持续小额恢复 / 持续小额伤害</td><td>己方结果区低层</td><td>缩小、合并、节流，避免自动战斗中刷屏</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="card">
+        <h2>自动战斗场景下的原则</h2>
+        <table>
+          <tbody>
+            <tr><td>敌人攻击与玩家技能 CD 同时发生</td><td>优先保证玩家受伤 / 被控可读，再显示敌方结果。</td></tr>
+            <tr><td>己方飘字与技能栏距离</td><td>飘字可以接近底部 UI，但不能压住技能 CD、吟唱、禁用状态。</td></tr>
+            <tr><td>治疗与受伤同时触发</td><td>不混成同一颜色，允许分左右轨道显示，或先伤害后治疗。</td></tr>
+            <tr><td>状态文字</td><td>只保留短词，如眩晕、冻结、中毒、护盾；复杂说明交给状态 UI。</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

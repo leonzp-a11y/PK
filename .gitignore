@@ -1,0 +1,46 @@
+# OS/editor noise
+.DS_Store
+Thumbs.db
+desktop.ini
+*.tmp
+*.temp
+*.log
+~$*
+
+# Python caches and local environments
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.venv/
+venv/
+env/
+
+# Node/project caches, if tools are added later
+node_modules/
+dist/
+build/
+.cache/
+
+# Local secrets/config
+.env
+.env.*
+!.env.example
+
+# Large media assets: keep these in cloud storage or Git LFS
+*.mp4
+*.mov
+*.avi
+*.mkv
+*.webm
+*.wav
+*.aiff
+*.mp3
+
+# Large source art / DCC files
+*.psd
+*.psb
+*.blend
+*.fbx
+*.obj
