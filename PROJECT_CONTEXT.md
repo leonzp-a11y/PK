@@ -1,170 +1,284 @@
-# PK Project Context
+# PROJECT CONTEXT
 
-## 项目背景
+更新时间：2026-05-15  
+项目目录：`E:\PK`
 
-本项目位于 Windows 笔记本的 `E:\PK`，主要包含 PK 项目的设计文档、战斗表现分析材料、脚本工具、截图和 Codex Skill 相关内容。当前目标是让该项目可以在 Windows 笔记本与 Mac 笔记本的 Codex 环境之间稳定同步。
+## 1. 项目背景
 
-用户希望通过 Git 将项目同步到 Mac，并已创建 GitHub 远程仓库：
+当前工作围绕一个自动战斗 Demo 的“战斗表现规则框架”展开。Demo 的底层战斗前提是：
+
+- 己方技能按冷却时间自动释放。
+- 敌方按自身攻击节奏自动行动。
+- 玩家主要通过观察战斗过程、理解结果反馈，并据此选择成长路径。
+
+本阶段的目标不是调整技能表、配置表或战斗数值，而是先建立一套能给程序前端、美术、策划共同使用的表现规则框架，用来指导后续 Demo 表现迭代。
+
+用户希望框架能覆盖：
+
+- 己方行动表现。
+- 敌方行动表现。
+- UI 信息表现。
+- 结果反馈与强化表现。
+- 镜头与战斗节奏。
+- 飘字、DOT、成功防御、受击绑定点等专项规则。
+
+后续还会基于该规则框架，对战斗录屏进行回填，生成优化 TODO List，用于判断哪些问题属于底层表现规则缺失，哪些只是表现细节优化。
+
+## 2. 关键决策
+
+### 2.1 文档形态
+
+- 最终当前主文档只保留 Markdown，不再维护 DOCX。
+- 旧文档只保留一份 Markdown 备份。
+- 当前正式版文件名为：`战斗表现规则框架-V0.2.md`。
+- 旧版文件名为：`战斗表现规则框架旧.md`。
+
+### 2.2 规则框架结构
+
+经过一次结构盘查后，正式版 V0.2 从原来的“己方/敌方/UI/特殊/图示”结构，重构为更工程化的五大模块：
+
+1. 框架目标与战斗前提
+2. 行动表现模块
+3. 信息反馈模块
+4. 结果表现模块
+5. 全局表现调度
+
+重构目标：
+
+- 避免一个规则在多个模块重复定义。
+- 避免过度拆分。
+- 让程序前端、美术能按模块快速定位职责。
+- 把横向通用规则，如屏幕分区、飘字优先级、DOT、成功防御、镜头节奏，放到唯一主章节中。
+
+### 2.3 保留但暂不展开的内容
+
+- 视角适配规则暂时不单独展开。当前只在敌方威胁表达中保留轻量原则：威胁来源必须可读；第一人称/近背视角下，威胁来源可转化为屏幕边缘光效、方向性镜头晃动、方向性特效和音效。
+- Demo 回填与优化 TODO 不放在规则框架文档中，后续单独生成文档。
+- 特效遮挡与画面预算图、技能 CD/吟唱 UI 状态图、战场信息分区图等复杂图示暂缓。
+
+### 2.4 已确认的重要规则
+
+- 飘字分区不单独建立第二套分区系统，而是遵循信息反馈模块中的屏幕信息分区。
+- DOT/持续伤害独立成专项规则，不再只归入“多段小伤害”。
+- 成功防御独立成专项规则，格挡、闪避、护盾吸收等需要给防御方正反馈。
+- 镜头和节奏属于全局表现调度，只强化关键事件，不承担基础信息说明。
+- 中央提示区只给 Boss 转阶段、波次、卡牌选择、结算等阶段信息，不承载普通飘字。
+- 普通小怪、中型怪、精英怪默认使用模型中心点作为受击表现绑定点；中大型怪优先用 X/Y/Z 轴偏移修正；Boss 特殊受击点只预留概念。
+
+## 3. 已完成工作
+
+### 3.1 战斗表现专家 Skill
+
+已创建本地 Codex Skill：
+
+- `C:\Users\42764\.codex\skills\combat-presentation\SKILL.md`
+- `C:\Users\42764\.codex\skills\combat-presentation\references\combat-demo-review-framework.md`
+
+用途：
+
+- 作为“战斗表现专家”进行战斗录屏分析。
+- 基于 Demo 战斗过程挖掘表现问题。
+- 输出问题诊断、方案建议和可沉淀的表现规则。
+
+### 3.2 战斗录屏分析
+
+用户提供过战斗录屏：
+
+- `E:\PK\设计文档\战斗录屏-蜘蛛洞穴.mp4`
+
+已基于该录屏生成过分析报告与证据截图板：
+
+- `E:\PK\设计文档\战斗表现分析报告\战斗DEMO表现分析报告-蜘蛛洞穴.docx`
+- `E:\PK\设计文档\战斗表现分析报告\证据截图板\`
+
+这些是早期分析产物，后续要基于 V0.2 规则框架重新做一次“录屏回填与优化 TODO”。
+
+### 3.3 战斗表现规则框架
+
+当前正式版已重构完成：
+
+- `E:\PK\设计文档\战斗表现规则框架-V0.2.md`
+
+旧版仅保留一份：
+
+- `E:\PK\设计文档\战斗表现规则框架旧.md`
+
+正式版 V0.2 当前结构：
 
 ```text
-https://github.com/leonzp-a11y/PK.git
+1. 框架目标与战斗前提
+2. 行动表现模块
+   2.1 己方行动表现
+   2.2 敌方行动表现
+3. 信息反馈模块
+   3.1 UI 信息表现
+   3.2 屏幕信息分区
+   3.3 飘字与状态反馈
+4. 结果表现模块
+   4.1 命中与结果路径
+   4.2 强弱分级
+   4.3 成功防御
+   4.4 DOT/持续伤害
+   4.5 受击绑定点
+5. 全局表现调度
+   5.1 模块总览
+   5.2 镜头调度
+   5.3 战斗节奏
+   5.4 事件触发分级
+   5.5 使用约束
+   5.6 与其他模块的关系
 ```
 
-## 关键决策
+### 3.4 Mermaid 流程图
 
-1. 使用 Git 作为 Windows 与 Mac 间的主要同步方式。
-2. 使用 GitHub 远程仓库作为同步中转。
-3. 仓库主分支使用 `main`。
-4. `.mp4` 视频文件不纳入 Git 同步，避免仓库过大或触发 GitHub 大文件限制。
-5. 截图、文档、Markdown、Python 脚本、HTML 图示、配置等项目工作文件纳入 Git。
-6. 添加 `.gitattributes`，让 Windows/Mac 间换行和二进制文件处理更稳定。
-7. GitHub 认证问题最终通过 Git Credential Manager 解决，已成功推送。
+当前 Markdown 内已包含 Mermaid 代码流程图，用于替换用户原 DOCX 中由其他软件转录的流程图图片。
 
-## 已完成工作
+已同步的流程图包括：
 
-1. 在 `E:\PK` 初始化 Git 仓库。
-2. 创建并提交 `.gitignore`，排除视频、缓存、临时文件、本地环境和大型源素材。
-3. 创建并提交 `.gitattributes`，定义文本换行和二进制文件处理规则。
-4. 完成首次本地提交：
+- 己方技能释放表现流程。
+- 敌方攻击表现流程。
+- UI 信息响应流程。
+- 命中与结果反馈流程。
 
-```text
-d7ea3e8 Initial PK project
-```
+用户最近要求为 `显示优先级与动效强度` 生成逻辑流程图，已先在对话中给出 Mermaid 草案，但尚未写入文档。
 
-5. 绑定远程仓库：
+### 3.5 HTML 示意图
 
-```text
-origin  https://github.com/leonzp-a11y/PK.git
-```
+已生成图示入口和多个 HTML 示意图：
 
-6. 成功推送 `main` 分支到 GitHub：
+- `E:\PK\设计文档\表现图示\diagram-guidelines.html`
+- `E:\PK\设计文档\表现图示\floating-text-priority.html`
+- `E:\PK\设计文档\表现图示\floating-text-enemy-results.html`
+- `E:\PK\设计文档\表现图示\floating-text-ally-results.html`
+- `E:\PK\设计文档\表现图示\ally-skill-cast-flow.html`
+- `E:\PK\设计文档\表现图示\enemy-attack-warning-3step.html`
+- `E:\PK\设计文档\表现图示\hit-bind-point.html`
 
-```text
-main -> main
-```
+这些 HTML 是早期图示资源。当前正式版 V0.2 文档已经重构，后续需要重新判断这些 HTML 是否继续沿用、改名、合并或重做。
 
-7. 本地 `main` 已设置为跟踪远程 `origin/main`。
+### 3.6 文件清理
 
-## 未完成任务
+用户要求只保留两份 Markdown：
 
-1. 在 Mac 笔记本的 Codex 中克隆仓库。
-2. 如果用户需要，可将 GitHub 仓库从 Private 改为 Public。
-3. 如果以后需要同步视频，再单独考虑网盘或 Git LFS；当前明确不需要同步 `.mp4`。
-4. Mac 克隆后可检查文档、脚本、图片路径是否符合预期。
+- 新版：`战斗表现规则框架-V0.2.md`
+- 旧版：`战斗表现规则框架旧.md`
 
-## 重要文件路径
+已删除多余的 DOCX、中间版本和旧命名文件。
 
-### 项目根目录
+## 4. 未完成任务
 
-```text
-E:\PK
-```
+### 4.1 将显示优先级流程图写入文档
 
-### Git 同步相关
+用户刚要求查看 `显示优先级与动效强度` 的逻辑流程图。
 
-```text
-E:\PK\.gitignore
-E:\PK\.gitattributes
-E:\PK\PROJECT_CONTEXT.md
-```
+已在对话中提供 Mermaid 草案，尚未写入：
 
-### 主要设计文档
+- `E:\PK\设计文档\战斗表现规则框架-V0.2.md`
 
-```text
-E:\PK\设计文档
-E:\PK\战斗表现底层框架v0.1.md
-E:\PK\设计文档\自动战斗表现底层框架v0.2.md
-E:\PK\设计文档\自动战斗表现底层框架v0.2.docx
-E:\PK\设计文档\战斗表现规则框架-V0.2.md
-E:\PK\设计文档\钓鱼系统设计方案.md
-E:\PK\设计文档\世界碎片与逸闻系统.md
-```
+建议下一步：将该流程图插入 `3.3.3 显示优先级与动效强度` 后，作为 `显示优先级判定流程`。
 
-### 战斗表现分析相关
+### 4.2 重新对齐 HTML 图示
 
-```text
-E:\PK\combat_video_analysis
-E:\PK\设计文档\战斗表现分析报告
-E:\PK\设计文档\战斗表现分析报告\战斗DEMO表现分析报告-蜘蛛洞穴.docx
-```
+现有 HTML 图示仍沿用早期 `7.1-7.4` 图示规范体系。正式版 V0.2 已改成五大模块，因此后续需要决定：
 
-### 脚本工具
+- 是否保留 `diagram-guidelines.html` 作为图示入口。
+- 是否把图示入口改为 V0.2 模块结构。
+- 是否重命名旧 HTML，使其对应 V0.2 中的章节：
+  - 己方技能释放链路 → `2.1`
+  - 敌方攻击表现 → `2.2`
+  - 屏幕信息分区/飘字优先级 → `3.2/3.3`
+  - 受击绑定点 → `4.5`
 
-```text
-E:\PK\build_auto_combat_framework_doc.py
-E:\PK\build_combat_doc_report.py
-E:\PK\build_combat_framework_doc.py
-E:\PK\extract_docx_images.py
-E:\PK\extract_docx_outline.py
-E:\PK\sync_auto_combat_framework_from_user_doc.py
-E:\PK\tools
-```
+### 4.3 录屏回填与优化 TODO
 
-### Skill 相关
+还未基于正式版 V0.2 对蜘蛛洞穴录屏重新做“规则回填”。
 
-```text
-E:\PK\SKILL
-E:\PK\SKILL\worldbuilding-designer\SKILL.md
-```
+后续应单独生成文档，建议命名：
 
-## Mac 端同步步骤
+- `E:\PK\设计文档\战斗表现Demo回填与优化TODO-蜘蛛洞穴.md`
 
-在 Mac 的 Codex 终端中执行：
+回填目标：
 
-```bash
-mkdir -p ~/Projects
-cd ~/Projects
-git clone https://github.com/leonzp-a11y/PK.git
-cd PK
-git status
-```
+- 按 V0.2 框架逐条检查录屏。
+- 标记已满足、部分满足、未满足。
+- 区分底层规则缺失、模块链路不完整、表现细节不足、纯美术优化。
+- 生成第一轮优化 TODO List。
 
-如果 `git status` 显示工作区干净，并且分支跟踪 `origin/main`，则同步成功。
+### 4.4 视角适配规则
 
-## 日常同步流程
+视角适配规则暂不进入 V0.2 主文档。用户明确说后续单独再弄。
 
-### Windows 修改后推送
+后续可单独建立：
 
-```powershell
-cd E:\PK
-git pull
-git add .
-git commit -m "Update"
-git push
-```
+- 第一人称/近背视角威胁表达规则。
+- 第一人称下屏幕边缘、方向性镜头、受击方向提示。
+- 第三人称下地面圈、范围边界、弹道提示。
+- 不同视角下 UI、飘字、镜头和威胁表达的差异。
 
-### Mac 修改后推送
+### 4.5 DOCX 暂不维护
 
-```bash
-cd ~/Projects/PK
-git pull
-git add .
-git commit -m "Update"
-git push
-```
+用户要求不需要 DOC。后续不要主动生成 DOCX，除非用户重新要求。
 
-### 另一台机器更新
+## 5. 重要文件路径
 
-```bash
-git pull
-```
+### 5.1 当前主文档
 
-Windows PowerShell 中同样执行：
+- `E:\PK\设计文档\战斗表现规则框架-V0.2.md`
 
-```powershell
-git pull
-```
+### 5.2 当前旧版
 
-## 注意事项
+- `E:\PK\设计文档\战斗表现规则框架旧.md`
 
-1. `.mp4` 文件已被 `.gitignore` 排除，Mac 克隆后看不到视频是正常现象。
-2. 如果 GitHub 仓库改为公开，仓库中的文档、截图、配置、脚本都会被别人看到。
-3. 不要在 Git 中提交账号、密码、token、私钥或 `.env` 文件。
-4. 以后新增大文件时，先确认是否应该进 Git；超过 100MB 的文件不要直接提交到普通 GitHub 仓库。
+### 5.3 图示 HTML
 
-## 下一步计划
+- `E:\PK\设计文档\表现图示\diagram-guidelines.html`
+- `E:\PK\设计文档\表现图示\floating-text-priority.html`
+- `E:\PK\设计文档\表现图示\floating-text-enemy-results.html`
+- `E:\PK\设计文档\表现图示\floating-text-ally-results.html`
+- `E:\PK\设计文档\表现图示\ally-skill-cast-flow.html`
+- `E:\PK\设计文档\表现图示\enemy-attack-warning-3step.html`
+- `E:\PK\设计文档\表现图示\hit-bind-point.html`
 
-1. 将本文件提交并推送到 GitHub。
-2. 用户在 Mac 端克隆仓库。
-3. Mac 克隆完成后运行 `git status` 检查状态。
-4. 后续在两台机器之间使用 `pull -> edit -> add -> commit -> push` 的节奏同步。
+### 5.4 录屏与分析报告
+
+- `E:\PK\设计文档\战斗录屏-蜘蛛洞穴.mp4`
+- `E:\PK\设计文档\战斗表现分析报告\战斗DEMO表现分析报告-蜘蛛洞穴.docx`
+- `E:\PK\设计文档\战斗表现分析报告\证据截图板\`
+
+### 5.5 Skill
+
+- `C:\Users\42764\.codex\skills\combat-presentation\SKILL.md`
+- `C:\Users\42764\.codex\skills\combat-presentation\references\combat-demo-review-framework.md`
+
+### 5.6 源文档抽取残留
+
+以下是之前从用户 DOCX 中抽取的中间资源，当前不是主文档：
+
+- `E:\PK\设计文档\_source_pk_combat_framework_extract.md`
+- `E:\PK\设计文档\_source_pk_framework_images\`
+- `E:\PK\设计文档\_render_source_pk_framework\`
+
+后续如需进一步清理，可以询问用户是否删除。
+
+## 6. 下一步计划
+
+建议下一步按以下顺序推进：
+
+1. 将 `显示优先级与动效强度` 的 Mermaid 判定流程图写入 `战斗表现规则框架-V0.2.md`。
+2. 对 V0.2 主文档做一次最终轻量审校：
+   - 标题层级。
+   - 术语统一。
+   - 是否还有旧章节残留。
+   - 是否有重复规则。
+3. 重新整理 `表现图示` 目录，使 HTML 图示入口对应 V0.2 新结构。
+4. 基于 `战斗录屏-蜘蛛洞穴.mp4` 做一次 Demo 回填，单独输出 TODO 文档。
+5. 后续再单独设计“视角适配规则”文档。
+
+## 7. 当前注意事项
+
+- 不要再主动生成 DOCX，除非用户明确要求。
+- 不要恢复旧的多文件命名体系。
+- 当前主文档只认 `战斗表现规则框架-V0.2.md`。
+- 旧版只认 `战斗表现规则框架旧.md`。
+- 若需要修改规则框架，优先在 V0.2 主文档中修改，再根据需要同步 HTML 图示。
+- 视角适配暂不展开，避免污染当前主框架。
